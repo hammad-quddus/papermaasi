@@ -32,6 +32,41 @@ const Section = ({ title, children }) => (
   </div>
 )
 
+const CollapsibleSection = ({ title, items }) => {
+  const [open, setOpen] = useState(false)
+
+  return (
+    <div style={{ marginTop: 15 }}>
+
+      {/* Header */}
+      <div
+        onClick={() => setOpen(!open)}
+        style={{
+          cursor: "pointer",
+          padding: 10,
+          border: "1px solid #ddd",
+          borderRadius: 8,
+          backgroundColor: "#f5f5f5",
+          fontWeight: "bold"
+        }}
+      >
+        {title} {open ? "▲" : "▼"}
+      </div>
+
+      {/* Body */}
+      {open && (
+        <div style={{ padding: 10, border: "1px solid #ddd", borderTop: "none" }}>
+          <ul>
+            {items?.map((item, i) => (
+              <li style={text} key={i}>{item}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  )
+}
+
 function App() {
 
   // State variables to hold the uploaded files and evaluation result
@@ -114,7 +149,7 @@ function App() {
       {result && (
         <div style={{ marginTop: 20, padding: 20 }}>
 
-          <h2>Evaluation Report</h2>
+          <h1>Grade Report</h1>
 
           <h3>{result.studentName}</h3>
 
@@ -168,13 +203,45 @@ function App() {
             </Section>
           )}
 
+
+          <h3>Evaluation</h3>
+
+
+          <CollapsibleSection
+            title="Accuracy"
+            items={result.evaluation.accuracy}
+          />
+
+          <CollapsibleSection
+            title="Coverage"
+            items={result.evaluation.coverage}
+          />
+
+          <CollapsibleSection
+            title="Use of Resources"
+            items={result.evaluation.useOfResources}
+          />
+
+          <CollapsibleSection
+            title="Structure"
+            items={result.evaluation.structure}
+          />
+
+          <CollapsibleSection
+            title="Relevance"
+            items={result.evaluation.relevance}
+          />
+          <CollapsibleSection
+            title="EvaluationSummary"
+            items={[result.evaluationSummary]}
+          />
         </div>
       )}
 
       {result && (
 
 
-        <pre>
+        <pre style={text}>
           {JSON.stringify(result, null, 2)}
         </pre>
       )}
