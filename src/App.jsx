@@ -67,6 +67,37 @@ const CollapsibleSection = ({ title, items }) => {
   )
 }
 
+
+const JsonBlock = ({ title, data }) => {
+  const [open, setOpen] = useState(false)
+
+  return (
+    <div style={{ marginTop: 20 }}>
+
+      <div
+        onClick={() => setOpen(!open)}
+        style={{
+          cursor: "pointer",
+          padding: 10,
+          border: "1px solid #ddd",
+          borderRadius: 8,
+          backgroundColor: "#f5f5f5",
+          fontWeight: "bold"
+        }}
+      >
+        {title} {open ? "▲" : "▼"}
+      </div>
+
+      {open && (
+        <pre style={text}>
+          {JSON.stringify(data, null, 2)}
+        </pre>
+      )}
+
+    </div>
+  )
+}
+
 function App() {
 
   // State variables to hold the uploaded files and evaluation result
@@ -205,7 +236,9 @@ function App() {
 
 
           <h3>Evaluation</h3>
-
+          <Section title="Evaluation Summary">
+            <p style={text}>{result.evaluationSummary}</p>
+          </Section>
 
           <CollapsibleSection
             title="Accuracy"
@@ -231,19 +264,13 @@ function App() {
             title="Relevance"
             items={result.evaluation.relevance}
           />
-          <CollapsibleSection
-            title="EvaluationSummary"
-            items={[result.evaluationSummary]}
-          />
+
         </div>
       )}
 
+
       {result && (
-
-
-        <pre style={text}>
-          {JSON.stringify(result, null, 2)}
-        </pre>
+        <JsonBlock title="Raw JSON (Debug View)" data={result} />
       )}
 
     </div>
