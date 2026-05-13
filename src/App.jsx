@@ -15,6 +15,23 @@ const text = {
   textAlign: "left"
 };
 
+const Section = ({ title, children }) => (
+  <div style={{ marginTop: 20 }}>
+    <h4>{title}</h4>
+    <div
+      style={{
+        marginTop: 10,
+        padding: 15,
+        border: "1px solid #ddd",
+        borderRadius: 8,
+        backgroundColor: "#fafafa"
+      }}
+    >
+      {children}
+    </div>
+  </div>
+)
+
 function App() {
 
   // State variables to hold the uploaded files and evaluation result
@@ -64,7 +81,7 @@ function App() {
   return (
     <div style={{ padding: 20 }}>
 
-      <h1>Exam Marker MVP</h1>
+      <h1>Paper Marker Proto</h1>
 
       <div>
         <p>Student Paper</p>
@@ -94,7 +111,8 @@ function App() {
 
 
 
-      {result && (<div style={{ marginTop: 20, padding: 20 }}>
+      {result && (
+        <div style={{ marginTop: 20, padding: 20 }}>
 
           <h2>Evaluation Report</h2>
 
@@ -106,40 +124,52 @@ function App() {
 
           <hr />
 
-          <h4>Summary</h4>
-          <div style={card}>
+          {/* Summary */}
+          <Section title="Summary">
             <p style={text}>{result.evaluationSummary}</p>
-          </div>
+          </Section>
 
+          {/* Strengths */}
+          <Section title="Strengths">
+            <ul style={{ margin: 0, paddingLeft: 20 }}>
+              {result.strengths?.map((item, i) => (
+                <li style={text} key={i}>{item}</li>
+              ))}
+            </ul>
+          </Section>
 
-          <h4>Strengths</h4>
-          <ul>
-            {result.strengths?.map((item, i) => (
-              <li key={i}>{item}</li>
-            ))}
-          </ul>
+          {/* Improvements */}
+          <Section title="Improvements">
+            <ul style={{ margin: 0, paddingLeft: 20 }}>
+              {result.improvements?.map((item, i) => (
+                <li style={text} key={i}>{item}</li>
+              ))}
+            </ul>
+          </Section>
 
-          <h4>Improvements</h4>
-          <ul>
-            {result.improvements?.map((item, i) => (
-              <li key={i}>{item}</li>
-            ))}
-          </ul>
-
+          {/* Factual Errors */}
           {result.factualErrors?.length > 0 && (
-            <>
-              <h4>Factual Errors</h4>
-              <ul>
+            <Section title="Factual Errors">
+              <ul style={{ margin: 0, paddingLeft: 20 }}>
                 {result.factualErrors.map((item, i) => (
-                  <li key={i}>{item}</li>
+                  <li style={text} key={i}>{item}</li>
                 ))}
               </ul>
-            </>
+            </Section>
+          )}
+
+          {result.teacherComments?.length > 0 && (
+            <Section title="Teacher Comments">
+              <ul style={{ margin: 0, paddingLeft: 20 }}>
+                {result.teacherComments.map((item, i) => (
+                  <li style={text} key={i}>{item}</li>
+                ))}
+              </ul>
+            </Section>
           )}
 
         </div>
       )}
-
 
       {result && (
 
