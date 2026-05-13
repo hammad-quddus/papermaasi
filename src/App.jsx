@@ -98,6 +98,38 @@ const JsonBlock = ({ title, data }) => {
   )
 }
 
+
+const TrafficLight = ({ status }) => {
+  const colorMap = {
+    red: "red",
+    yellow: "gold",
+    green: "green"
+  }
+
+  return (
+    <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+      <div
+        style={{
+          width: 14,
+          height: 14,
+          borderRadius: "50%",
+          backgroundColor: colorMap[status],
+          boxShadow: `0 0 6px ${colorMap[status]}`
+        }}
+      />
+      <span style={{ fontWeight: "bold" }}>
+        {status.toUpperCase()} REVIEW STATUS
+      </span>
+    </div>
+  )
+}
+
+function getTrafficLight(result) {
+  if (result.requiresHumanReview) return "red"
+  if (result.confidence?.gradingConfidence < 0.96) return "yellow"
+  return "green"
+}
+
 function App() {
 
   // State variables to hold the uploaded files and evaluation result
@@ -182,6 +214,12 @@ function App() {
 
           <h1>Grade Report</h1>
 
+          {result && (
+            <div style={{ marginBottom: 15 }}>
+              <TrafficLight status={getTrafficLight(result)} />
+            </div>
+          )}
+
           <h3>{result.studentName}</h3>
 
           <p>
@@ -234,36 +272,38 @@ function App() {
             </Section>
           )}
 
+          <div style={{ marginTop: 20, padding: 15, border: "1px solid #ddd", borderRadius: 8, backgroundColor: "#fafafa" }}>
+            <h3>Evaluation</h3>
+            <Section title="Evaluation Summary">
+              <p style={text}>{result.evaluationSummary}</p>
+            </Section>
 
-          <h3>Evaluation</h3>
-          <Section title="Evaluation Summary">
-            <p style={text}>{result.evaluationSummary}</p>
-          </Section>
+            <CollapsibleSection
+              title="Accuracy"
+              items={result.evaluation.accuracy}
+            />
 
-          <CollapsibleSection
-            title="Accuracy"
-            items={result.evaluation.accuracy}
-          />
+            <CollapsibleSection
+              title="Coverage"
+              items={result.evaluation.coverage}
+            />
 
-          <CollapsibleSection
-            title="Coverage"
-            items={result.evaluation.coverage}
-          />
+            <CollapsibleSection
+              title="Use of Resources"
+              items={result.evaluation.useOfResources}
+            />
 
-          <CollapsibleSection
-            title="Use of Resources"
-            items={result.evaluation.useOfResources}
-          />
+            <CollapsibleSection
+              title="Structure"
+              items={result.evaluation.structure}
+            />
 
-          <CollapsibleSection
-            title="Structure"
-            items={result.evaluation.structure}
-          />
+            <CollapsibleSection
+              title="Relevance"
+              items={result.evaluation.relevance}
+            />
 
-          <CollapsibleSection
-            title="Relevance"
-            items={result.evaluation.relevance}
-          />
+          </div>
 
         </div>
       )}
