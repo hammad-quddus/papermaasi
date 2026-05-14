@@ -126,16 +126,17 @@ const TrafficLight = ({ status }) => {
 
 function getTrafficLight(result) {
   if (result.requiresHumanReview) return "red"
-  if (result.confidence?.gradingConfidence < 0.96) return "yellow"
+  if (result.confidence?.gradingConfidence < 0.95) return "yellow"
   return "green"
 }
 
 function App() {
 
   // State variables to hold the uploaded files and evaluation result
-  const [paper, setPaper] = useState(null)
-  const [rubric, setRubric] = useState(null)
-  const [solutions, setSolutions] = useState(null)
+
+  const [paper, setPaper] = useState([])
+  const [rubric, setRubric] = useState([])
+  const [solutions, setSolutions] = useState([])
 
   const [result, setResult] = useState(null)
   const [loading, setLoading] = useState(false)
@@ -146,21 +147,33 @@ function App() {
 
     const formData = new FormData()
 
-    formData.append("paper", paper)
-    formData.append("rubric", rubric)
-    formData.append("solutions", solutions)
+    // formData.append("paper", paper)
+    // formData.append("rubric", rubric)
+    // formData.append("solutions", solutions)
+
+    paper.forEach(file => {
+      formData.append("paperImages", file)
+    })
+
+    rubric.forEach(file => {
+      formData.append("rubricImages", file)
+    })
+
+    solutions.forEach(file => {
+      formData.append("solutionImages", file)
+    })
 
     // API call to backend to evaluate the exam paper using the provided rubric and solutions
     try {
 
-      // const response = await fetch("http://localhost:8080/api/exam/evaluate", {
-      //   method: "POST",
-      //   body: formData
-      // })
+      const response = await fetch("http://localhost:8080/api/exam/evaluate", {
+        method: "POST",
+        body: formData
+      })
 
-      // const data = await response.json()
+      const data = await response.json()
 
-      const data = mockResult
+      // const data = mockResult
 
       setResult(data)
 
@@ -183,17 +196,32 @@ function App() {
 
       <div>
         <p>Student Paper</p>
-        <input type="file" onChange={(e) => setPaper(e.target.files[0])} />
+        <input
+          type="file"
+          multiple
+          accept="image/*"
+          onChange={(e) => setPaper(Array.from(e.target.files))}
+        />
       </div>
 
       <div>
         <p>Rubric</p>
-        <input type="file" onChange={(e) => setRubric(e.target.files[0])} />
+        <input
+          type="file"
+          multiple
+          accept="image/*"
+          onChange={(e) => setRubric(Array.from(e.target.files))}
+        />
       </div>
 
       <div>
         <p>Solutions</p>
-        <input type="file" onChange={(e) => setSolutions(e.target.files[0])} />
+        <input
+          type="file"
+          multiple
+          accept="image/*"
+          onChange={(e) => setSolutions(Array.from(e.target.files))}
+        />
       </div>
 
       <br />
