@@ -276,16 +276,14 @@ function App() {
           <p>
             <b>Marks:</b> {result.marksAwarded} / {result.maxMarks}
           </p>
+          <p>
+            <b>Band:</b> [{result.rubricReference.band.min} to {result.rubricReference.band.max}]
+          </p>
 
           <hr />
 
-{/* // TEMP: disabled until UI rework
+          {/* // TEMP: disabled until UI rework
 // strengths, improvements, summary, teacherComments */}
-
-          {/* Summary */}
-          {/* <Section title="Summary">
-            <p style={text}>{result.evaluationSummary}</p>
-          </Section> */}
 
           <Section title="Coverage Gaps">
             <p style={text}>{result.coverageGaps}</p>
@@ -320,18 +318,13 @@ function App() {
               </ul>
             </Section>
           )}
+          {/* Summary */}
+          <Section title="Summary">
+            <p style={text}>{result.evaluationSummary}</p>
+          </Section>
 
-          {/* {result.teacherComments?.length > 0 && (
-            <Section title="Teacher Comments">
-              <ul style={{ margin: 0, paddingLeft: 20 }}>
-                {result.teacherComments.map((item, i) => (
-                  <li style={text} key={i}>{item}</li>
-                ))}
-              </ul>
-            </Section>
-          )} */}
 
-          <div style={{ marginTop: 20, padding: 15, border: "1px solid #ddd", borderRadius: 8, backgroundColor: "#fafafa" }}>
+          {/* <div style={{ marginTop: 20, padding: 15, border: "1px solid #ddd", borderRadius: 8, backgroundColor: "#fafafa" }}>
             <h3>Evaluation</h3>
             <Section title="Evaluation Summary">
               <p style={text}>{result.evaluationSummary}</p>
@@ -368,7 +361,7 @@ function App() {
 
 
           </div>
-
+ */}
         </div>
 
 
@@ -377,9 +370,9 @@ function App() {
 
 
 
-      {result && (
+      {/* {result && (
         <JsonBlock title="Raw JSON (Debug View)" data={result} />
-      )}
+      )} */}
 
     </div>
   )
