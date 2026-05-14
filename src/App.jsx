@@ -166,7 +166,7 @@ function App() {
     // API call to backend to evaluate the exam paper using the provided rubric and solutions
     try {
 
-      const response = await fetch("http://localhost:8080/api/exam/evaluate", {
+      const response = await fetch("http://192.168.0.109:8080/api/exam/evaluate", {
         method: "POST",
         body: formData
       })
@@ -215,7 +215,7 @@ function App() {
       </div>
 
       <div>
-        <p>Solutions</p>
+        <p>Official Solution</p>
         <input
           type="file"
           multiple
@@ -260,6 +260,11 @@ function App() {
           <Section title="Summary">
             <p style={text}>{result.evaluationSummary}</p>
           </Section>
+
+          <Section title="Coverage Gaps">
+            <p style={text}>{result.coverageGaps}</p>
+          </Section>
+
 
           {/* Strengths */}
           <Section title="Strengths">
