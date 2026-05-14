@@ -1,3 +1,4 @@
+import maasiBanner from "./assets/maasi-marker.png"
 import { useState } from 'react'
 import { mockResult } from "./mock/data"
 
@@ -191,8 +192,19 @@ function App() {
   // JSX for rendering the UI
   return (
     <div style={{ padding: 20 }}>
+      <div style={{ textAlign: "center", marginBottom: 30 }}>
+        <img
+          src={maasiBanner}
+          alt="Maasi Marker"
+          style={{
+            width: "100%",
+            maxWidth: 900,
+            borderRadius: 12,
+            boxShadow: "0 4px 12px rgba(0,0,0,0.15)"
+          }}
+        />
+      </div>
 
-      <h1>Paper Marker Proto</h1>
 
       <div>
         <p>Student Paper</p>
@@ -233,8 +245,19 @@ function App() {
       <br />
       <br />
 
-      {loading && <p>Evaluating exam paper...</p>}
-
+      {loading && (
+        <div style={{ marginTop: 20, display: "flex", alignItems: "center", gap: 10 }}>
+          <div style={{
+            width: 16,
+            height: 16,
+            border: "2px solid #ccc",
+            borderTop: "2px solid #333",
+            borderRadius: "50%",
+            animation: "spin 0.8s linear infinite"
+          }} />
+          <p style={{ margin: 0 }}>Evaluating exam paper...</p>
+        </div>
+      )}
 
 
       {result && (
@@ -256,10 +279,13 @@ function App() {
 
           <hr />
 
+{/* // TEMP: disabled until UI rework
+// strengths, improvements, summary, teacherComments */}
+
           {/* Summary */}
-          <Section title="Summary">
+          {/* <Section title="Summary">
             <p style={text}>{result.evaluationSummary}</p>
-          </Section>
+          </Section> */}
 
           <Section title="Coverage Gaps">
             <p style={text}>{result.coverageGaps}</p>
@@ -267,22 +293,22 @@ function App() {
 
 
           {/* Strengths */}
-          <Section title="Strengths">
+          {/* <Section title="Strengths">
             <ul style={{ margin: 0, paddingLeft: 20 }}>
               {result.strengths?.map((item, i) => (
                 <li style={text} key={i}>{item}</li>
               ))}
             </ul>
-          </Section>
+          </Section> */}
 
           {/* Improvements */}
-          <Section title="Improvements">
+          {/* <Section title="Improvements">
             <ul style={{ margin: 0, paddingLeft: 20 }}>
               {result.improvements?.map((item, i) => (
                 <li style={text} key={i}>{item}</li>
               ))}
             </ul>
-          </Section>
+          </Section> */}
 
           {/* Factual Errors */}
           {result.factualErrors?.length > 0 && (
@@ -295,7 +321,7 @@ function App() {
             </Section>
           )}
 
-          {result.teacherComments?.length > 0 && (
+          {/* {result.teacherComments?.length > 0 && (
             <Section title="Teacher Comments">
               <ul style={{ margin: 0, paddingLeft: 20 }}>
                 {result.teacherComments.map((item, i) => (
@@ -303,7 +329,7 @@ function App() {
                 ))}
               </ul>
             </Section>
-          )}
+          )} */}
 
           <div style={{ marginTop: 20, padding: 15, border: "1px solid #ddd", borderRadius: 8, backgroundColor: "#fafafa" }}>
             <h3>Evaluation</h3>
@@ -336,10 +362,19 @@ function App() {
               items={result.evaluation.relevance}
             />
 
+            <Section title="Student Answer Transcription">
+              <p style={text}>{result.studentSolutionTranscription}</p>
+            </Section>
+
+
           </div>
 
         </div>
+
+
+
       )}
+
 
 
       {result && (
